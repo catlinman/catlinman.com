@@ -43,9 +43,9 @@ sections:
 <a class="stat" href="https://youtube.com/catlinman"><strong>70</strong><span>Videos on YouTube</span></a>
 </div>
 
-Catlinman was the name I went by online from 2013 to 2020, and most people just called me Cat. I worked on pretty much anything a computer can do: digital art, animation and 3D modelling, programming, game design, web development and electronic music.
+From 2013 to 2020 I went by Catlinman online, or Cat to most people. The old version of this page introduced me as a radical dreaming humble fishstick and fiendlord, which still about covers it. I did a bit of everything with a computer: digital art, animation and 3D modelling, programming and game design, websites, and electronic music.
 
-This site gathers what's left of that work. The gallery holds the cover art, animation and renders, the projects page covers the games, music visuals and communities, and the timeline below shows how it all fit together. If you want to talk about any of it, the contact page has everything you need.
+This site is what's left of that work. The cover art, animations and renders are in the gallery. The games, music visuals and communities I helped run are on the projects page, and the timeline further down puts it all in order. If you want to talk about any of it, the contact page has the ways to reach me.
 
 <div class="callout">
 I retired the Catlinman handle in 2020 and go by zealsprince now. Thanks for coming along for this part of the journey. To see what I'm up to these days, head over to <a href="https://zealsprince.com">zealsprince.com</a>.
