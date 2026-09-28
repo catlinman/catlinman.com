@@ -350,9 +350,6 @@ gallery:
       - slug: da_mind
         name: "Mind"
         year: "2016"
-      - slug: da_modern_jpeg
-        name: "Modern.jpeg"
-        year: "2016"
       - slug: da_void
         name: "Void"
         year: "2016"
@@ -567,17 +564,355 @@ gallery:
         year: "2012"
   - name: Photography
     id: photography
+    hidden: true
     items:
-      - slug: photography_1
-        name: "Droplets"
-        year: "2014"
-      - slug: photography_2
-        name: "The Blind Snake"
+      - slug: flickr_green_shell
+        name: "Green Shell"
+        year: "2021"
+      - slug: flickr_artifact
+        name: "Artifact"
+        year: "2021"
+      - slug: flickr_rest
+        name: "Rest"
+        year: "2021"
+      - slug: flickr_hollow_in_the_land
+        name: "Hollow In The Land"
+        year: "2021"
+      - slug: flickr_coldest_ones
+        name: "Coldest Ones"
+        year: "2021"
+      - slug: flickr_couple
+        name: "Couple"
+        year: "2021"
+      - slug: flickr_banffs_edge
+        name: "Banffs Edge"
+        year: "2020"
+      - slug: flickr_revenant
+        name: "Revenant"
+        year: "2020"
+      - slug: flickr_snowrays
+        name: "Snowrays"
+        year: "2020"
+      - slug: flickr_runaway_birds
+        name: "Runaway Birds"
+        year: "2020"
+      - slug: flickr_the_mood
+        name: "The Mood"
+        year: "2020"
+      - slug: flickr_nestegg
+        name: "Nestegg"
+        year: "2020"
+      - slug: flickr_built_to_hold
+        name: "Built to Hold"
+        year: "2020"
+      - slug: flickr_seeing_the_other_side
+        name: "Seeing the other Side"
+        year: "2020"
+      - slug: flickr_wooden_walls_wooden_walls
+        name: "Wooden Walls Wooden Walls"
+        year: "2020"
+      - slug: flickr_from_another_side
+        name: "From Another Side"
+        year: "2020"
+      - slug: flickr_there_leads_a_trail
+        name: "There Leads A Trail"
+        year: "2020"
+      - slug: flickr_to_which_we_gaze
+        name: "To which we Gaze"
+        year: "2020"
+      - slug: flickr_through_the_ice
+        name: "Through the Ice"
+        year: "2020"
+      - slug: flickr_red_giants
+        name: "Red Giants"
+        year: "2020"
+      - slug: flickr_lines
+        name: "Lines"
+        year: "2020"
+      - slug: flickr_shallow_blue
+        name: "Shallow Blue"
+        year: "2020"
+      - slug: flickr_frail_touch
+        name: "Frail Touch"
+        year: "2020"
+      - slug: flickr_longing_apart
+        name: "Longing Apart"
+        year: "2020"
+      - slug: flickr_homes
+        name: "Homes"
+        year: "2020"
+      - slug: flickr_pathfinder
+        name: "Pathfinder"
+        year: "2020"
+      - slug: flickr_30251721404
+        year: "2016"
+      - slug: flickr_28031269922
+        year: "2016"
+      - slug: flickr_28056509301
+        year: "2016"
+      - slug: flickr_26939124812
+        year: "2016"
+      - slug: flickr_26999932946
+        year: "2016"
+      - slug: flickr_spring_gold
+        name: "Spring Gold"
+        year: "2016"
+      - slug: flickr_25340668754
+        year: "2016"
+      - slug: flickr_25852562732
+        year: "2016"
+      - slug: flickr_25878410371
+        year: "2016"
+      - slug: flickr_21288536124
+        year: "2015"
+      - slug: flickr_21724406629
+        year: "2015"
+      - slug: flickr_21724405909
+        year: "2015"
+      - slug: flickr_21554374826
+        year: "2015"
+      - slug: flickr_20442162135
+        year: "2015"
+      - slug: flickr_20253983100
+        year: "2015"
+      - slug: flickr_19323112113
+        year: "2015"
+      - slug: flickr_foam
+        name: "Foam"
+        year: "2015"
+      - slug: flickr_in_the_thicket
+        name: "In the Thicket"
+        year: "2015"
+      - slug: flickr_walker
+        name: "Walker"
+        year: "2015"
+      - slug: flickr_18378904298
+        year: "2015"
+      - slug: flickr_moving_towards_the_horizon
+        name: "Moving Towards the Horizon"
+        year: "2015"
+      - slug: flickr_in_bloom
+        name: "In Bloom"
+        year: "2015"
+      - slug: flickr_sleepy
+        name: "Sleepy"
+        year: "2015"
+      - slug: flickr_early_awakening
+        name: "Early Awakening"
+        year: "2015"
+      - slug: flickr_first_light_2015
+        name: "First Light"
+        year: "2015"
+      - slug: flickr_fumes_in_the_sunset
+        name: "Fumes in the Sunset"
+        year: "2015"
+      - slug: flickr_spring
+        name: "Spring"
+        year: "2015"
+      - slug: flickr_tablecat
+        name: "Tablecat"
+        year: "2015"
+      - slug: flickr_into_the_mist
+        name: "Into the Mist"
+        year: "2015"
+      - slug: flickr_christmas_contrast
+        name: "Christmas Contrast"
+        year: "2015"
+      - slug: flickr_plains_in_the_sea
+        name: "Plains in the Sea"
         year: "2014"
       - slug: photography_3
         name: "Snowdonia Range"
         year: "2014"
+      - slug: flickr_godray
+        name: "Godray"
+        year: "2014"
+      - slug: flickr_up_a_mountain
+        name: "Up a Mountain"
+        year: "2014"
+      - slug: flickr_downhill_stream
+        name: "Downhill Stream"
+        year: "2014"
+      - slug: flickr_a_friendly_face
+        name: "A Friendly Face"
+        year: "2014"
+      - slug: flickr_crows_view
+        name: "Crow's View"
+        year: "2014"
+      - slug: flickr_coins
+        name: "Coins"
+        year: "2014"
+      - slug: flickr_blue_lake
+        name: "Blue Lake"
+        year: "2014"
+      - slug: flickr_the_lookout
+        name: "The Lookout"
+        year: "2014"
+      - slug: flickr_ruined_reflection
+        name: "Ruined Reflection"
+        year: "2014"
+      - slug: flickr_lost_moth
+        name: "Lost Moth"
+        year: "2014"
+      - slug: photography_1
+        name: "Droplets"
+        year: "2014"
+      - slug: flickr_after_the_rain
+        name: "After the Rain"
+        year: "2014"
+      - slug: flickr_thorns
+        name: "Thorns"
+        year: "2014"
+      - slug: flickr_silhouette
+        name: "Silhouette"
+        year: "2014"
+      - slug: flickr_worlds_end
+        name: "World's End"
+        year: "2014"
+      - slug: flickr_colors
+        name: "Colors"
+        year: "2014"
+      - slug: photography_2
+        name: "The Blind Snake"
+        year: "2014"
       - slug: photography_5
         name: "Take Flight"
+        year: "2014"
+      - slug: flickr_barriers
+        name: "Barriers"
+        year: "2014"
+      - slug: flickr_on_the_edge
+        name: "On the Edge"
+        year: "2014"
+      - slug: flickr_pink_bell
+        name: "Pink Bell"
+        year: "2014"
+      - slug: flickr_going_nowhere
+        name: "Going Nowhere"
+        year: "2014"
+      - slug: flickr_little_mushrooms
+        name: "Little Mushrooms"
+        year: "2014"
+      - slug: flickr_fern_clearing
+        name: "Fern Clearing"
+        year: "2014"
+      - slug: flickr_covered_face
+        name: "Covered Face"
+        year: "2014"
+      - slug: flickr_pistyll_rhaeadr_waterfall
+        name: "Pistyll Rhaeadr Waterfall"
+        year: "2014"
+      - slug: flickr_sky_above
+        name: "Sky Above"
+        year: "2014"
+      - slug: flickr_sheep_with_tails
+        name: "Sheep with Tails"
+        year: "2014"
+      - slug: flickr_details
+        name: "Details"
+        year: "2014"
+      - slug: flickr_stay_vigilant
+        name: "Stay Vigilant"
+        year: "2014"
+      - slug: flickr_sniegs_flower
+        name: "Snieg's Flower"
+        year: "2014"
+      - slug: flickr_passing
+        name: "Passing"
+        year: "2014"
+      - slug: flickr_familiar_face
+        name: "Familiar Face"
+        year: "2014"
+      - slug: flickr_glaring_leaves
+        name: "Glaring Leaves"
+        year: "2014"
+      - slug: flickr_redburn
+        name: "Redburn"
+        year: "2014"
+      - slug: flickr_summer_seaside
+        name: "Summer Seaside"
+        year: "2014"
+      - slug: flickr_in_the_sunshine
+        name: "In the Sunshine"
+        year: "2014"
+      - slug: flickr_german_countryside
+        name: "German Countryside"
+        year: "2014"
+      - slug: flickr_dike_inhabitants
+        name: "Dike Inhabitants"
+        year: "2014"
+      - slug: flickr_red_lighthouse
+        name: "Red Lighthouse"
+        year: "2014"
+      - slug: flickr_tranquility
+        name: "Tranquility"
+        year: "2014"
+      - slug: flickr_crimson_sunset
+        name: "Crimson Sunset"
+        year: "2014"
+      - slug: flickr_signs_of_summer
+        name: "Signs of Summer"
+        year: "2014"
+      - slug: flickr_first_light_2014
+        name: "First Light"
+        year: "2014"
+      - slug: flickr_14562579814
+        year: "2014"
+      - slug: flickr_growth
+        name: "Growth"
+        year: "2014"
+      - slug: flickr_14358957637
+        year: "2014"
+      - slug: flickr_14525555591
+        year: "2014"
+      - slug: flickr_14342332388
+        year: "2014"
+      - slug: flickr_14486336201
+        year: "2014"
+      - slug: flickr_14239903317
+        year: "2014"
+      - slug: flickr_14370535991
+        year: "2014"
+      - slug: flickr_14373778885
+        year: "2014"
+      - slug: flickr_14186957428
+        year: "2014"
+      - slug: flickr_14393707083
+        year: "2014"
+      - slug: flickr_14343144626
+        year: "2014"
+      - slug: flickr_14362904891
+        year: "2014"
+      - slug: flickr_14165819557
+        year: "2014"
+      - slug: flickr_14150430757
+        year: "2014"
+      - slug: flickr_14310715201
+        year: "2014"
+      - slug: flickr_14310684511
+        year: "2014"
+      - slug: flickr_14120793090
+        year: "2014"
+      - slug: flickr_14304651122
+        year: "2014"
+      - slug: flickr_14305955294
+        year: "2014"
+      - slug: flickr_14119855038
+        year: "2014"
+      - slug: flickr_14114630500
+        year: "2014"
+      - slug: flickr_14283398652
+        year: "2014"
+      - slug: flickr_14268759404
+        year: "2014"
+      - slug: flickr_14246041146
+        year: "2014"
+      - slug: flickr_14268727794
+        year: "2014"
+      - slug: flickr_14082475939
+        year: "2014"
+      - slug: flickr_14266999092
+        year: "2014"
+      - slug: flickr_14082472230
         year: "2014"
 ---

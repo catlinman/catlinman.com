@@ -44,7 +44,7 @@ Each `---` divider starts a new panel. A panel that opens with `<!-- year: 2014 
 - `order` (number): Used for sorting navigation.
 - `hidden` (boolean, optional): Keeps the page out of the navigation. Pages in subfolders never show up there.
 - `sections` (array of objects, optional): Entries for the section bar below the navigation. Each has a `name` and the `id` of the heading it jumps to. `top` jumps to the start of the page.
-- `gallery` (array of objects, optional): Gallery categories. The page shows every piece in one full width stream sorted by year, newest first, with the categories as filters in the section bar. Each category has a `name`, an `id` and a list of `items`. Each item has:
+- `gallery` (array of objects, optional): Gallery categories. The page shows every piece in one full width stream sorted by year, newest first, with the categories as toggles in the section bar. Each category has a `name`, an `id` and a list of `items`. `hidden: true` starts a category toggled off. Each item has:
   - `slug` (string): Image file name under `static/img/gallery/`, without the extension
   - `name` (string, optional): Title shown on hover and in the lightbox
   - `year` (string, optional): Shown before the title and used for sorting. A range like `2014/2015` sorts by its last year, and pieces without a year go last.

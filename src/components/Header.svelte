@@ -49,13 +49,14 @@
   })
 </script>
 
-<header class="noselect" class:blurred>
+<!-- Blurred behind a page, so its links step out of the way -->
+<header class="noselect" class:blurred inert={contentActive}>
   <Logo active={!contentActive} bind:element={logo} />
 
-  <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-  <h1><a href="/about/">- Catlinman -</a></h1>
-
   {#if !contentActive}
+    <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+    <h1 in:fade|global={{ delay: 400 }} out:fade|global><a href="/about/">- Catlinman -</a></h1>
+
     {#if quotes}
       {#key psa}
         <h2 class="subtitle" title="PSA by {psa.author}" in:fade|global={{ delay: 400 }} out:fade|global>"{psa.content}"</h2>
@@ -80,6 +81,14 @@
   @use "@/vars.scss" as vars;
 
   header {
+    // Shared with the logo so the name can hang right under the art. The art
+    // circle reaches 0.43 of the box below its centre, and the centre rises
+    // off the middle only when a short screen can't fit the name beneath it.
+    --logo-size: min(clamp(50vw, 1024px, 70vw), clamp(50vh, 1024px, 70vh));
+    --logo-reach: calc(var(--logo-size) * 0.43);
+    --logo-center: min(50vh, 100vh - var(--logo-reach) - 212px);
+    --name-top: calc(var(--logo-center) + var(--logo-reach) + 48px);
+
     z-index: -2;
     position: fixed;
     top: 0;
@@ -102,7 +111,7 @@
   // Under the logo on desktop. Phones move the name to the top, under the nav.
   h1 {
     position: fixed;
-    bottom: 11%;
+    top: var(--name-top);
     left: 0;
     right: 0;
     width: 640px;
@@ -124,7 +133,6 @@
 
     @media all and (max-width: vars.$content-width-mobile) {
       top: 72px;
-      bottom: auto;
       width: 100%;
       font-size: clamp(1.8em, 9vw, 2.4em);
       letter-spacing: 6px;
@@ -138,7 +146,7 @@
 
   .subtitle {
     position: fixed;
-    bottom: 7%;
+    top: calc(var(--name-top) + 96px);
     left: 0;
     right: 0;
     margin: 0;

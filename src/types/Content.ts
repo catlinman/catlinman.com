@@ -15,6 +15,7 @@ export interface GalleryItem {
 export interface GallerySection {
   name: string
   id: string
+  hidden?: boolean // Starts toggled off in the filters
   items: GalleryItem[]
 }
 

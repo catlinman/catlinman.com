@@ -160,8 +160,7 @@
 <style lang="scss">
   @use "@/vars.scss" as vars;
 
-  // Clicks on the empty margins fall through to the background, which closes
-  // the page
+  // Clicks on the empty margins fall through to the background scene
   .content-body {
     pointer-events: none;
 
@@ -171,15 +170,15 @@
   }
 
   // Room for the section bar, which phones hide, and the gallery filters,
-  // which they keep
-  .with-sections,
+  // which they keep. Zeroing the padding on phones instead would drop the base
+  // 1px too, and the first panel's margin would collapse up under the nav.
   .with-filters {
     padding-top: 36px;
   }
 
-  @media all and (max-width: vars.$content-width-mobile) {
+  @media all and (min-width: #{vars.$content-width-mobile + 1}) {
     .with-sections {
-      padding-top: 0;
+      padding-top: 36px;
     }
   }
 

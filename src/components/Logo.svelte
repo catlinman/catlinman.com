@@ -174,20 +174,16 @@
 
   $art: url('/img/logo.webp');
 
-  // Desktop leaves room for the name underneath, phones centre it alone
+  // Desktop centres it on the page, sized and placed by the header so the
+  // name lines up under it
   .logo {
     position: fixed;
-    top: 0;
-    bottom: 16%;
+    top: calc(var(--logo-center) - var(--logo-size) / 2);
     left: 0;
     right: 0;
-    margin: auto;
-    width: 1024px;
-    height: 1024px;
-    min-width: 50%;
-    min-height: 50%;
-    max-width: 70%;
-    max-height: 70%;
+    margin: 0 auto;
+    width: var(--logo-size);
+    height: var(--logo-size);
     container-type: size;
 
     // Phones centre it in the space under the name, which sits at the top.
@@ -199,16 +195,11 @@
       --logo-size: min(134vw,calc(100dvh - var(--below-name) - 24px));
 
       top: calc(var(--below-name) + (100dvh - var(--below-name) - var(--logo-size)) / 2);
-      bottom: auto;
       left: calc(50% - var(--logo-size) / 2);
       right: auto;
       margin: 0;
       width: var(--logo-size);
       height: var(--logo-size);
-      min-width: 0;
-      min-height: 0;
-      max-width: none;
-      max-height: none;
     }
   }
 

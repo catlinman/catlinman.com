@@ -25,7 +25,10 @@ sections:
     id: deprecated
 ---
 
+<header class="hero" style="--hero: url('/img/heroes/setup.webp')">
+<a class="hero-open" href="/img/about/setup_desktop.webp" data-lightbox="hero-setup" data-title="My desktop back then" aria-label="Open image"></a>
 <h1>Setup &amp; Tools</h1>
+</header>
 <div class="callout">
 <strong>Time capsule.</strong> This is my setup and toolset as it stood in 2017. It hasn't been updated since and is kept here as it was.
 </div>

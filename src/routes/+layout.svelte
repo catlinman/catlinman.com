@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { NavItem } from '$types/Content'
-  import { goto } from '$app/navigation'
   import { page } from '$app/state'
   import Footer from '$components/Footer.svelte'
   import Header from '$components/Header.svelte'
@@ -32,24 +31,10 @@
 
     return () => reduceMotion.removeEventListener('change', update)
   })
-
-  // Clicking the background or pressing escape backs out to the landing page
-  function close() {
-    if (contentActive)
-      // eslint-disable-next-line svelte/no-navigation-without-resolve
-      goto('/')
-  }
-
-  function onKeyUp(e: KeyboardEvent) {
-    if (e.key === 'Escape')
-      close()
-  }
 </script>
 
-<svelte:window onkeyup={onKeyUp} />
-
-<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-<div class="background" onclick={close} oncontextmenu={e => e.preventDefault()}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="background" oncontextmenu={e => e.preventDefault()}>
   <div class="vignette"></div>
   <Particles enabled={effects} {blurred} obstacle={logo} />
   <Header {contentActive} {blurred} bind:logo />

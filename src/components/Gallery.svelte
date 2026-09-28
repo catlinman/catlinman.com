@@ -2,6 +2,7 @@
   import type { GalleryItem, GallerySection } from '$types/Content'
   import YearRail, { yearId } from '$components/YearRail.svelte'
   import { reveal } from '$lib/client/reveal'
+  import { SvelteSet } from 'svelte/reactivity'
 
   interface Props {
     sections: GallerySection[]
@@ -36,7 +37,10 @@
       .sort((a, b) => b.sortYear - a.sortYear),
   )
 
-  let filter: string | null = $state(null)
+  // Categories toggle on and off independently, hidden ones start off. Only
+  // the initial sections matter here, the toggles own the state after that.
+  // svelte-ignore state_referenced_locally
+  const enabled = new SvelteSet(sections.filter(section => !section.hidden).map(section => section.id))
   let top: HTMLElement | undefined = $state()
   let width = $state(0)
 
@@ -44,7 +48,8 @@
   const GAP = 12
   const MOBILE = 760
 
-  const visible = $derived(filter ? pieces.filter(piece => piece.category === filter) : pieces)
+  const all = $derived(sections.every(section => enabled.has(section.id)))
+  const visible = $derived(pieces.filter(piece => enabled.has(piece.category)))
 
   const years = $derived.by(() => {
     const groups: Array<{ label: string, pieces: Piece[] }> = []
@@ -88,18 +93,33 @@
     return { columns, size }
   }
 
-  function setFilter(category: string | null) {
-    filter = category
+  // Alt-click solos the category instead of toggling it
+  function toggle(category: string, event: MouseEvent) {
+    if (event.altKey)
+      enabled.clear()
+
+    if (enabled.has(category))
+      enabled.delete(category)
+    else
+      enabled.add(category)
+
+    top?.scrollIntoView()
+  }
+
+  function showAll() {
+    for (const section of sections)
+      enabled.add(section.id)
+
     top?.scrollIntoView()
   }
 
 </script>
 
 <div class="content-navigation filters">
-  <button class:active={!filter} onclick={() => setFilter(null)}>All <span>{pieces.length}</span></button>
+  <button class:active={all} onclick={showAll}>All <span>{pieces.length}</span></button>
 
   {#each sections as section (section.id)}
-    <button class:active={filter === section.id} onclick={() => setFilter(section.id)}>
+    <button class:active={enabled.has(section.id)} aria-pressed={enabled.has(section.id)} onclick={event => toggle(section.id, event)}>
       {section.name} <span>{section.items.length}</span>
     </button>
   {/each}
