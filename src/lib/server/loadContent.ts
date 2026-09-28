@@ -1,4 +1,5 @@
 import type { ContentData, Frontmatter, NavItem } from '$types/Content'
+import type { Buffer } from 'node:buffer'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { error } from '@sveltejs/kit'
@@ -6,6 +7,7 @@ import matter from 'gray-matter'
 import { marked } from 'marked'
 
 const contentDir = path.resolve('content')
+const galleryThumbs = path.resolve('static/img/gallery/thumbs')
 
 // Headings take an explicit anchor as `# Heading {#anchor}`, which keeps the
 // short anchors the old site used instead of slugging the heading text.
@@ -36,8 +38,50 @@ export async function loadContent(slug: string): Promise<ContentData> {
 
   const { data, content } = matter(raw)
   const html = await marked.parse(content)
+  const frontmatter = data as Frontmatter
 
-  return { html, frontmatter: data as Frontmatter }
+  // Masonry tiles need the thumbnail size up front so the layout doesn't jump
+  // while the images load
+  for (const section of frontmatter.gallery ?? []) {
+    for (const item of section.items) {
+      const size = webpSize(await fs.readFile(path.join(galleryThumbs, `${item.slug}.webp`)))
+
+      item.width = size.width
+      item.height = size.height
+    }
+  }
+
+  return { html, frontmatter }
+}
+
+// Reads the canvas size from the header of the three WebP flavours vips writes
+function webpSize(buffer: Buffer): { width: number, height: number } {
+  const chunk = buffer.toString('ascii', 12, 16)
+
+  if (chunk === 'VP8X') {
+    return {
+      width: 1 + buffer.readUIntLE(24, 3),
+      height: 1 + buffer.readUIntLE(27, 3),
+    }
+  }
+
+  if (chunk === 'VP8 ') {
+    return {
+      width: buffer.readUInt16LE(26) & 0x3FFF,
+      height: buffer.readUInt16LE(28) & 0x3FFF,
+    }
+  }
+
+  if (chunk === 'VP8L') {
+    const bits = buffer.readUInt32LE(21)
+
+    return {
+      width: 1 + (bits & 0x3FFF),
+      height: 1 + ((bits >> 14) & 0x3FFF),
+    }
+  }
+
+  throw new Error(`Unrecognised WebP chunk ${chunk}`)
 }
 
 export async function loadNavItems(): Promise<NavItem[]> {
@@ -66,6 +110,16 @@ export async function loadNavItems(): Promise<NavItem[]> {
   navItems.sort((a, b) => a.order - b.order)
 
   return navItems
+}
+
+export async function loadPages(): Promise<Array<{ slug: string } & Frontmatter>> {
+  const slugs = await listSlugs()
+
+  return Promise.all(slugs.map(async (slug) => {
+    const raw = await fs.readFile(path.join(contentDir, `${slug}.md`), 'utf-8')
+
+    return { slug, ...matter(raw).data }
+  }))
 }
 
 // Every markdown file under content/ becomes a page, nested folders included.

@@ -13,7 +13,7 @@ const svelteFiles = ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js']
 
 export default antfu(
   includeIgnoreFile(gitignorePath),
-  { ignores: ['**/*.md'] },
+  { ignores: ['**/*.md', 'static/games/**'] },
   ...svelte.configs.recommended.map(config => ({
     ...config,
     files: config.files ?? svelteFiles,

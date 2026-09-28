@@ -4,6 +4,8 @@
 
   const { data }: { data: ContentData } = $props()
 
+  const sections = $derived(data.frontmatter.sections)
+
   const title = $derived(
     data.frontmatter.heading ? `Catlinman - ${data.frontmatter.heading}` : 'Catlinman',
   )
@@ -18,4 +20,4 @@
   {/if}
 </svelte:head>
 
-<Content html={data.html} sections={data.frontmatter.sections} />
+<Content html={data.html} {sections} gallery={data.frontmatter.gallery} />

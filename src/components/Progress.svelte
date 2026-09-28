@@ -57,7 +57,7 @@
     left: 0;
     width: 100%;
     height: 2px;
-    z-index: 2;
+    z-index: 6;
     background: vars.$base-color;
     transform-origin: center;
     opacity: 0;

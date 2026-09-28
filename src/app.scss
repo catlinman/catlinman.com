@@ -38,8 +38,8 @@ a:visited {
   color: vars.$base-color;
   text-decoration: none;
   transition:
-    color 0.25s ease-in-out,
-    text-shadow 0.25s ease-in-out;
+    color 0.12s ease-in-out,
+    text-shadow 0.12s ease-in-out;
 
   &:hover {
     color: vars.$highlight-color;
@@ -66,15 +66,42 @@ a:visited {
 // Content arrives as rendered markdown, so these can't be scoped to a component.
 
 .content-contained {
-  display: inline-block;
-  width: 100%;
-  max-width: vars.$content-width;
-  min-width: vars.$content-width-mobile;
-  margin-top: 48px;
-  margin-bottom: 48px;
+  box-sizing: border-box;
+  max-width: 1100px;
+  margin: 48px auto 64px;
+  padding: 1px 24px;
   position: relative;
   z-index: 0;
-  text-align: justify;
+  text-align: left;
+
+  // Each divider in a page starts a new panel of frosted glass over the
+  // background scene
+  .panel {
+    margin: 32px 0;
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(254, 206, 126, 0.1);
+    background: rgba(18, 18, 18, 0.62);
+    backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow:
+      0px 16px 48px rgba(0, 0, 0, 0.45),
+      inset 0px 1px 0px rgba(255, 255, 255, 0.05);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  // On wide screens the panels drift off the center line in turn, so a page
+  // reads as a scatter of cards and not one long column
+  @media all and (min-width: 1300px) {
+    .panel:nth-of-type(odd) {
+      translate: -40px 0;
+    }
+
+    .panel:nth-of-type(even) {
+      translate: 40px 0;
+    }
+  }
 
   h1, h2, h3, h4, h5, p {
     margin: 16px;
@@ -101,33 +128,305 @@ a:visited {
     max-width: 100%;
   }
 
-  .content-center {
-    text-align: justify;
-    text-align-last: center;
+  .callout {
+    margin: 16px;
+    padding: 16px;
+    border: solid 1px vars.$base-color;
+    border-radius: 4px;
+    color: vars.$highlight-color;
+    box-shadow: 0px 0px 16px rgba(254, 206, 126, 0.15);
+  }
+
+  // Vertical timeline of milestones, a gold line with a dot per year
+  .milestones {
+    position: relative;
+    margin: 24px 32px 24px 40px;
+    padding-left: 28px;
+    border-left: 1px solid rgba(254, 206, 126, 0.3);
+
+    ul {
+      margin: 4px 0 0 18px;
+      line-height: 1.5em;
+    }
+  }
+
+  .milestone {
+    position: relative;
+    margin-bottom: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 12px;
+      width: 11px;
+      height: 11px;
+      border-radius: 100%;
+      background: vars.$base-color;
+      box-shadow: 0px 0px 12px vars.$base-glow;
+    }
+  }
+
+  .milestone-year {
+    font-family: vars.$logo-font;
+    font-size: 1.8em;
+    letter-spacing: 4px;
+    color: vars.$base-color;
+    -webkit-text-stroke: 1px vars.$base-color;
+  }
+
+  // ── Section heroes ──
+  // A panel can open with a hero: its key image as a banner across the top
+  // with the heading over it. Without an image it's a padded heading.
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: -8px -8px 8px;
+    padding: 24px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
 
     h1 {
-      text-align: center;
+      margin: 0;
+      font-size: 2.2em;
+    }
+
+    .stamp {
+      margin: 0 0 4px;
+      align-self: flex-start;
+    }
+
+    .lede {
+      margin: 0;
+      font-size: 0.95em;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: vars.$highlight-color;
+    }
+
+    &[style] {
+      min-height: 260px;
+      background:
+        linear-gradient(to top, rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.5) 45%, rgba(18, 18, 18, 0.05)),
+        var(--hero) var(--hero-pos, center) / cover no-repeat;
+
+      h1,
+      .lede {
+        text-shadow: 0px 2px 16px rgba(0, 0, 0, 0.85);
+      }
+
+      .stamp {
+        background: rgba(13, 13, 13, 0.6);
+        backdrop-filter: blur(6px);
+      }
     }
   }
 
-  .content-clickable {
-    border: solid 1px vars.$dim-color;
-    padding: 16px;
-    border-radius: 4px;
+  .hero:has(.hero-open) {
+    cursor: zoom-in;
+  }
+
+  // Opens the hero's own image or video in the lightbox
+  .hero-open {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 1px solid rgba(254, 206, 126, 0.5);
+    background: rgba(13, 13, 13, 0.55);
+    backdrop-filter: blur(6px);
+    transition:
+      background 0.12s ease-in-out,
+      border-color 0.12s ease-in-out;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 11px;
+      background: vars.$base-color;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/%3E%3C/svg%3E") center / contain no-repeat;
+      transition: background 0.12s ease-in-out;
+    }
+
+    &.play::before {
+      inset: 12px 11px 12px 14px;
+      mask: none;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: vars.$highlight-color;
+      background: vars.$base-color;
+
+      &::before {
+        background: vars.$shadow-color;
+      }
+    }
+  }
+
+  // Markdown wraps a lone embed in a paragraph, which already has the margin
+  p > .embed {
+    margin: 0;
+  }
+
+  // A video shown in place, poster first. YouTube only loads once it's played.
+  .embed {
+    position: relative;
     display: block;
-    text-align: center;
     margin: 16px;
-    font-size: 1.2em;
-    transition: border 0.25s ease-in-out;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid rgba(254, 206, 126, 0.12);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 
-    &:hover {
-      border: solid 1px vars.$base-color;
+    img,
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+
+    &:not(:has(iframe))::before,
+    &:not(:has(iframe))::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transition:
+        transform 0.15s ease-out,
+        background 0.15s ease-out;
+    }
+
+    &:not(:has(iframe))::before {
+      width: 76px;
+      height: 76px;
+      translate: -50% -50%;
+      border-radius: 100%;
+      border: 1px solid rgba(254, 206, 126, 0.6);
+      background: rgba(13, 13, 13, 0.55);
+      backdrop-filter: blur(6px);
+    }
+
+    &:not(:has(iframe))::after {
+      width: 24px;
+      height: 28px;
+      translate: -35% -50%;
+      background: vars.$base-color;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    &:hover::before {
+      transform: scale(1.1);
+      background: vars.$base-color;
+    }
+
+    &:hover::after {
+      transform: scale(1.1);
+      background: vars.$shadow-color;
     }
   }
 
-  // Markdown wraps a lone link in a paragraph, which would double the inset
-  p > .content-clickable:only-child {
-    margin: 16px 0;
+  // Media under a hero fills its row evenly, whatever the count
+  .media {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 16px;
+
+    .tile {
+      width: 100%;
+    }
+
+    @media all and (max-width: vars.$content-width-mobile) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 8px;
+    }
+  }
+
+  // ── Buttons and chips ──
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px;
+  }
+
+  .button,
+  .button:visited {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 206, 126, 0.35);
+    background: rgba(254, 206, 126, 0.06);
+    color: vars.$base-color;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    transition:
+      border 0.12s ease-in-out,
+      background 0.12s ease-in-out,
+      color 0.12s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      border-color: vars.$base-color;
+      background: rgba(254, 206, 126, 0.16);
+      color: vars.$highlight-color;
+      text-shadow: none;
+    }
+  }
+
+  // Links that leave the site get an arrow
+  .button[href^='http']::after {
+    content: '↗';
+    font-size: 0.85em;
+    opacity: 0.8;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px;
+  }
+
+  .chip {
+    padding: 2px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 206, 126, 0.2);
+    font-size: 0.85em;
+    color: vars.$secondary-color;
+  }
+
+  a.chip:hover {
+    border-color: vars.$base-color;
+  }
+
+  // Marks write-ups carried over from an older version of the site
+  .stamp {
+    display: inline-block;
+    margin: 16px 16px 0;
+    padding: 2px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 206, 126, 0.25);
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: vars.$muted-color;
   }
 
   .message {
@@ -145,15 +444,140 @@ a:visited {
     }
   }
 
-  .profile-image {
-    border-radius: 100%;
-    background: url('/img/profile.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin: 24px auto;
-    width: 256px;
-    height: 256px;
+  // ── About intro ──
+  // A banner over a collage of cover art, with the profile picture beside
+  // the heading and a row of numbers under it.
+
+  .intro {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin: -8px -8px 8px;
+    padding: 24px;
+    min-height: 280px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+
+    // The collage and its dim sit on their own layers, so phones can blur the
+    // art without blurring the text
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &::before {
+      z-index: -2;
+      background: url('/img/heroes/about.webp') center / cover no-repeat;
+    }
+
+    &::after {
+      z-index: -1;
+      background: linear-gradient(to top, rgba(18, 18, 18, 0.97), rgba(18, 18, 18, 0.7) 55%, rgba(18, 18, 18, 0.45));
+    }
+
+    @media all and (max-width: vars.$content-width-mobile) {
+      &::before {
+        inset: -16px;
+        filter: blur(8px);
+      }
+
+      &::after {
+        background: linear-gradient(to top, rgba(18, 18, 18, 0.97), rgba(18, 18, 18, 0.8) 55%, rgba(18, 18, 18, 0.6));
+      }
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2.4em;
+      text-shadow: 0px 2px 16px rgba(0, 0, 0, 0.85);
+    }
+
+    .lede {
+      margin: 0 0 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: vars.$highlight-color;
+    }
+
+    .chips {
+      margin: 0;
+    }
+
+    .chip {
+      background: rgba(13, 13, 13, 0.55);
+      backdrop-filter: blur(6px);
+    }
+
+    @media all and (max-width: vars.$content-width-mobile) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .intro-avatar {
+    flex: none;
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    border: 1px solid rgba(254, 206, 126, 0.3);
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.6);
+    object-fit: cover;
+
+    @media all and (max-width: vars.$content-width-mobile) {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px;
+
+    @media all and (max-width: vars.$content-width-mobile) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .stat,
+  .stat:visited {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(254, 206, 126, 0.15);
+    background: rgba(254, 206, 126, 0.04);
+    transition:
+      border 0.12s ease-in-out,
+      background 0.12s ease-in-out;
+
+    strong {
+      font-family: vars.$logo-font;
+      font-weight: 100;
+      font-size: 2.2em;
+      line-height: 1.1;
+      color: vars.$base-color;
+      -webkit-text-stroke: 1px vars.$base-color;
+    }
+
+    span {
+      font-size: 0.8em;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: vars.$secondary-color;
+    }
+
+    &:hover {
+      border-color: vars.$base-color;
+      background: rgba(254, 206, 126, 0.1);
+      text-shadow: none;
+    }
   }
 
   table {
@@ -178,8 +602,8 @@ a:visited {
       color: vars.$base-color;
       cursor: pointer;
       transition:
-        color 0.25s ease-in-out,
-        text-shadow 0.25s ease-in-out;
+        color 0.12s ease-in-out,
+        text-shadow 0.12s ease-in-out;
 
       &:hover {
         color: vars.$highlight-color;
@@ -196,25 +620,44 @@ a:visited {
     white-space: nowrap;
   }
 
+  // Hidden until they scroll into view, see app.html and Content.svelte
+  .reveal & .panel:not(.revealed) {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  // Small screens: plain left aligned text, and wide tables scroll sideways
+  // instead of stretching the page
+  @media all and (max-width: vars.$content-width-mobile) {
+    text-align: left;
+
+    table {
+      display: block;
+      width: auto;
+      margin: 0 16px 16px;
+      overflow-x: auto;
+    }
+
+    .message h1 {
+      font-size: 3em;
+    }
+  }
+
   .contact-icons {
     margin: 16px;
-    text-align: center;
-    text-align-last: center;
 
     a {
+      --icon-inset: 4px;
       margin-left: 2px;
       margin-right: 2px;
       overflow: hidden;
-      background-size: 64px;
-      background-repeat: no-repeat;
-      background-position: center;
-      border: solid 2px vars.$background-color;
+      border: solid 2px transparent;
       border-radius: 100%;
       box-shadow: 0px 0px 16px vars.$shadow-color;
       width: 76px;
       height: 76px;
       display: inline-block;
-      transition: all 0.25s ease-in-out;
+      transition: all 0.12s ease-in-out;
 
       &:hover {
         border: solid 2px vars.$base-color;
@@ -224,12 +667,227 @@ a:visited {
   }
 }
 
-// ── Profile icons ──
-// Shared by the contact page and the footer.
+// ── Section bar ──
+// Sits under the navigation. Content pages fill it with jump links, the
+// gallery with its filters.
 
-@each $name in twitter, facebook, youtube, deviantart, github, instagram, snapchat, steam, twitch, lastfm, askfm {
-  .icon-#{$name} {
-    background-image: url('/img/icons/#{$name}.png');
+.content-navigation {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  padding: 4px 0;
+  z-index: 4;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  line-height: 24px;
+  color: vars.$base-color;
+  text-align: center;
+  border-bottom: 1px solid rgba(254, 206, 126, 0.1);
+  background: rgba(13, 13, 13, 0.6);
+  backdrop-filter: blur(16px);
+
+  // Long lists scroll sideways instead of wrapping onto the content
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  a {
+    margin: 0px 8px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  // Jump links take too much room on phones. The gallery filters stay.
+  @media all and (max-width: vars.$content-width-mobile) {
+    &:not(.filters) {
+      display: none;
+    }
+  }
+}
+
+// ── Year labels ──
+// Stick under the bars while their year scrolls past. Used by the gallery and
+// by timeline pages.
+
+.year-pill {
+  position: sticky;
+  top: 92px;
+  z-index: 3; // Above the tiles' play buttons as they scroll past
+  width: fit-content;
+  margin: 0 auto 8px;
+  padding: 4px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(254, 206, 126, 0.15);
+  background: rgba(13, 13, 13, 0.6);
+  backdrop-filter: blur(16px);
+  font-family: vars.$logo-font;
+  font-weight: 100;
+  font-size: 2em;
+  letter-spacing: 6px;
+  color: vars.$base-color;
+  -webkit-text-stroke: 1px vars.$base-color;
+  scroll-margin-top: 92px;
+}
+
+// ── Gallery tiles ──
+// Shared by the gallery page and the media rows on the projects page.
+
+.tile {
+  position: relative;
+  display: block;
+  width: 240px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(254, 206, 126, 0.12);
+  border-radius: 8px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
+  transition:
+    border 0.12s ease-in-out,
+    box-shadow 0.12s ease-in-out,
+    opacity 0.5s ease-out,
+    transform 0.25s ease-out;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease-in-out;
+  }
+
+  .caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    // A deep dim so captions stay readable on bright artwork, and above the
+    // play button so it never hides a word
+    z-index: 2;
+    padding: 40px 10px 8px;
+    background: linear-gradient(to top, rgba(8, 8, 8, 0.95), rgba(8, 8, 8, 0.85) 50%, transparent);
+    color: vars.$highlight-color;
+    font-size: 0.8em;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.9);
+    text-align: left;
+    text-align-last: auto;
+    opacity: 0;
+    transition: opacity 0.12s ease-in-out;
+  }
+
+  // Play marker on video tiles
+  // Play button on video tiles: a frosted disc with the triangle cut out on
+  // top of it
+  &.video::before,
+  &.video::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1; // Above the image, which gets its own layer when it zooms
+    pointer-events: none;
+    transition:
+      top 0.15s ease-out,
+      transform 0.15s ease-out,
+      background 0.15s ease-out,
+      box-shadow 0.15s ease-out,
+      border-color 0.15s ease-out;
+  }
+
+  &.video::before {
+    width: 52px;
+    height: 52px;
+    translate: -50% -50%;
+    border-radius: 100%;
+    border: 1px solid rgba(254, 206, 126, 0.6);
+    background: rgba(13, 13, 13, 0.55);
+    backdrop-filter: blur(6px);
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  &.video::after {
+    width: 16px;
+    height: 18px;
+    translate: -35% -50%;
+    background: vars.$base-color;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border: 1px solid vars.$base-color;
+    box-shadow: 0px 12px 32px vars.$base-glow;
+    transform: translateY(-4px);
+
+    img {
+      transform: scale(1.05);
+    }
+
+    .caption {
+      opacity: 1;
+    }
+
+    // The disc darkens and lifts on hover, making room for the caption
+    &.video::before,
+    &.video::after {
+      top: 36%;
+    }
+
+    &.video::before {
+      transform: scale(1.1);
+      border-color: vars.$base-color;
+      background: rgba(13, 13, 13, 0.75);
+      box-shadow: 0px 0px 16px vars.$base-glow;
+    }
+
+    &.video::after {
+      transform: scale(1.1);
+      background: vars.$highlight-color;
+    }
+  }
+
+  @media all and (max-width: vars.$content-width-mobile) {
+    width: calc(50% - 4px);
+  }
+}
+
+// Hidden until they scroll into view, see app.html and the reveal helper
+.reveal .tile:not(.revealed) {
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+}
+
+// ── Profile icons ──
+// Shared by the contact page and the footer. The icon files are gray discs
+// with the logo cut out, so they work as masks and the disc takes on the
+// link color instead of staying gray on the dark glass.
+
+.profile-icon,
+.profile-icon:visited {
+  position: relative;
+  color: vars.$secondary-color;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: var(--icon-inset, 0);
+    background-color: currentColor;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    transition: background-color 0.12s ease-in-out;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: vars.$base-color;
+    text-shadow: none;
+  }
+}
+
+@each $name in twitter, facebook, youtube, deviantart, github, instagram, snapchat, steam, twitch, lastfm {
+  .icon-#{$name}::before {
+    mask-image: url('/img/icons/#{$name}.webp');
   }
 }
 

@@ -1,21 +1,24 @@
 <script lang="ts">
+  import Logo from '$components/Logo.svelte'
   import { psas } from '$lib/psa'
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
 
   interface Props {
-    effects: boolean
     contentActive: boolean
     blurred: boolean
+    logo?: HTMLElement
   }
 
-  const { effects, contentActive, blurred }: Props = $props()
+  let { contentActive, blurred, logo = $bindable() }: Props = $props()
 
   const PSA_INTERVAL_MS = 15000
-  const PARALLAX_SMOOTHING = 0.1
+  const UNLOCK_HOVER_MS = 5000
 
-  let header: HTMLElement
+  // The quotes stay hidden until someone rests on the subtitle for a while
+  let quotes = $state(false)
   let psa = $state(psas[Math.floor(Math.random() * psas.length)])
+  let hoverTimer = 0
 
   function nextPsa() {
     let next = psa
@@ -26,80 +29,51 @@
     psa = next
   }
 
+  function startHover() {
+    hoverTimer = window.setTimeout(() => {
+      nextPsa()
+      quotes = true
+    }, UNLOCK_HOVER_MS)
+  }
+
   onMount(() => {
     const timer = window.setInterval(() => {
-      if (!contentActive)
+      if (quotes && !contentActive)
         nextPsa()
     }, PSA_INTERVAL_MS)
 
-    // ── Parallax ──
-    // The header tilts towards the cursor on the landing page and eases flat
-    // again whenever content is open or effects are off.
-
-    let mouseX = window.innerWidth / 2
-    let mouseY = window.innerHeight / 2
-    let tiltX = 0
-    let tiltY = 0
-    let raf = 0
-
-    function onMouseMove(e: MouseEvent) {
-      if (contentActive || !effects)
-        return
-
-      mouseX = e.clientX
-      mouseY = e.clientY
-    }
-
-    function tilt() {
-      raf = requestAnimationFrame(tilt)
-
-      const width = window.innerWidth
-      const height = window.innerHeight
-      const follow = effects && !contentActive
-
-      const targetX = follow ? (0.5 - mouseY / height) * 15 : 0
-      const targetY = follow ? -(0.5 - mouseX / width) * 20 : 0
-
-      tiltX += (targetX - tiltX) * PARALLAX_SMOOTHING
-      tiltY += (targetY - tiltY) * PARALLAX_SMOOTHING
-
-      if (!effects && Math.abs(tiltX) + Math.abs(tiltY) < 0.1) {
-        header.style.transform = ''
-        return
-      }
-
-      header.style.transform = `perspective(${(width + height) / 2}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`
-    }
-
-    window.addEventListener('mousemove', onMouseMove)
-    raf = requestAnimationFrame(tilt)
-
     return () => {
       clearInterval(timer)
-      cancelAnimationFrame(raf)
-      window.removeEventListener('mousemove', onMouseMove)
+      clearTimeout(hoverTimer)
     }
   })
 </script>
 
-<header class="noselect" class:blurred bind:this={header}>
-  <div class="logo"></div>
+<header class="noselect" class:blurred>
+  <Logo active={!contentActive} bind:element={logo} />
 
   <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
   <h1><a href="/about/">- Catlinman -</a></h1>
 
   {#if !contentActive}
-    {#key psa}
-      <h2 class="psa" title="PSA by {psa.author}" in:fade={{ delay: 400 }} out:fade>"{psa.content}"</h2>
-    {/key}
-
-    <p class="retired" transition:fade>
-      This handle was retired in 2020. You can find me as <a href="https://zealsprince.com">zealsprince</a> now.
-    </p>
+    {#if quotes}
+      {#key psa}
+        <h2 class="subtitle" title="PSA by {psa.author}" in:fade|global={{ delay: 400 }} out:fade|global>"{psa.content}"</h2>
+      {/key}
+    {:else}
+      <h2
+        class="subtitle charging"
+        in:fade|global={{ delay: 400 }}
+        out:fade|global
+        onmouseenter={startHover}
+        onmouseleave={() => clearTimeout(hoverTimer)}
+      >
+        Once a radical dreamer, now <a class="zeal" href="https://zealsprince.com" title="zealsprince.com">a prince of zeal</a>
+      </h2>
+    {/if}
   {/if}
 
   <span class="top"></span>
-  <span class="bottom"></span>
 </header>
 
 <style lang="scss">
@@ -125,71 +99,44 @@
     }
   }
 
-  .logo {
-    position: fixed;
-    top: 0;
-    bottom: 16%;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 1024px;
-    height: 1024px;
-    min-width: 50%;
-    min-height: 50%;
-    max-width: 70%;
-    max-height: 70%;
-    border-radius: 100px;
-    background: url('/img/logo.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: logo-pulse 10s ease-in-out infinite;
-
-    @media all and (max-width: vars.$content-width-mobile) {
-      min-width: 90%;
-      min-height: 70%;
-    }
-  }
-
-  @keyframes logo-pulse {
-    0%, 100% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(0.9);
-    }
-  }
-
+  // Under the logo on desktop. Phones move the name to the top, under the nav.
   h1 {
-    width: 640px;
     position: fixed;
-    bottom: 13%;
+    bottom: 11%;
     left: 0;
     right: 0;
+    width: 640px;
     margin: auto;
     font-weight: 100;
     font-size: 4em;
-    letter-spacing: 10px;
+    letter-spacing: 14px;
     text-align: center;
     transition:
-      letter-spacing 0.5s ease-in-out,
-      color 0.5s ease-in-out,
-      text-shadow 0.5s ease-in-out;
+      letter-spacing 0.25s ease-in-out,
+      color 0.25s ease-in-out,
+      text-shadow 0.25s ease-in-out;
 
     &:hover {
-      letter-spacing: 16px;
+      letter-spacing: 20px;
       color: vars.$highlight-color;
       text-shadow: 0px 0px 64px rgba(254, 206, 126, 0.75);
     }
 
     @media all and (max-width: vars.$content-width-mobile) {
+      top: 72px;
+      bottom: auto;
       width: 100%;
-      bottom: 18%;
+      font-size: clamp(1.8em, 9vw, 2.4em);
+      letter-spacing: 6px;
+      line-height: 1.2;
+
+      &:hover {
+        letter-spacing: 8px;
+      }
     }
   }
 
-  .psa {
+  .subtitle {
     position: fixed;
     bottom: 7%;
     left: 0;
@@ -199,29 +146,39 @@
     font-size: 1.2em;
     letter-spacing: 3px;
 
+    // Phones leave the subtitle out and give the logo the room
     @media all and (max-width: vars.$content-width-mobile) {
-      bottom: 13%;
-      font-size: 1em;
+      display: none;
     }
   }
 
-  // Not part of the 2017 design. It's here so anyone arriving from the old
-  // handle knows where to go.
-  .retired {
-    position: fixed;
-    bottom: 64px;
-    left: 0;
-    right: 0;
-    margin: 0;
-    color: vars.$muted-color;
-    -webkit-text-stroke: 0;
-    font-family: vars.$primary-font;
-    font-size: 0.75em;
-    letter-spacing: 2px;
-    white-space: normal;
+  // Resting on the subtitle slowly brightens it until the quotes take over,
+  // and leaving early lets it fade straight back
+  .charging {
+    transition:
+      color 0.2s ease-out,
+      text-shadow 0.2s ease-out;
 
-    a {
-      -webkit-text-stroke: 0;
+    &:hover {
+      color: vars.$highlight-color;
+      text-shadow: 0px 0px 48px rgba(254, 206, 126, 0.75);
+      transition:
+        color 5s linear,
+        text-shadow 5s linear;
+    }
+  }
+
+  .zeal {
+    transition:
+      color 0.12s ease-in-out,
+      text-shadow 0.12s ease-in-out,
+      -webkit-text-stroke-color 0.12s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      color: vars.$highlight-color;
+      -webkit-text-stroke-color: vars.$highlight-color;
+      text-shadow: 0px 0px 24px vars.$base-color;
     }
   }
 
@@ -232,14 +189,5 @@
     height: 148px;
     left: -50%;
     top: -96px;
-  }
-
-  .bottom {
-    position: fixed;
-    background: linear-gradient(0deg, vars.$shadow-color, vars.$shadow-color, vars.$background-color);
-    width: 200%;
-    height: 154px;
-    left: -50%;
-    bottom: -128px;
   }
 </style>

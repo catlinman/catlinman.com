@@ -26,6 +26,9 @@ sections:
 ---
 
 <h1>Setup &amp; Tools</h1>
+<div class="callout">
+<strong>Time capsule.</strong> This is my setup and toolset as it stood in 2017. It hasn't been updated since and is kept here as it was.
+</div>
 <p>
 This page contains tools and programs I used on a regular basis in my workflow.
 The page is divided up into multiple sections to make browsing things a bit easier.

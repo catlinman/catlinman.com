@@ -13,10 +13,12 @@
 		<meta property="og:image" content="https://catlinman.com/img/head/meta.jpg" />
 		<meta name="twitter:card" content="summary" />
 		<meta name="twitter:site" content="@catllnman" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Work+Sans:wght@100&display=swap" />
 		%sveltekit.head%
+		<script>
+			// Content panels fade in on scroll, unless the visitor asked for less motion
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+				document.documentElement.classList.add('reveal')
+		</script>
 	</head>
 	<body>
 		<div style="display: contents">%sveltekit.body%</div>
