@@ -44,6 +44,7 @@
     art.style.setProperty('--light-x', current.x.toFixed(4))
     art.style.setProperty('--light-y', current.y.toFixed(4))
     art.style.setProperty('--light', current.light.toFixed(4))
+    art.style.setProperty('--hover', current.hover.toFixed(4))
 
     // The rim light scales with distance from the centre, where the pointer's
     // direction swings around too fast to follow. Right at the centre the
@@ -163,6 +164,7 @@
     <div class="layer glow"></div>
     <div class="layer rim"></div>
     <div class="layer shine"></div>
+    <div class="bloom"></div>
   </div>
 
   <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
@@ -210,6 +212,7 @@
     --light-x: 0;
     --light-y: 0;
     --light: 0;
+    --hover: 0;
     --angle: 0deg;
     --distance: 0;
     --size: min(100cqw, 100cqh);
@@ -275,6 +278,31 @@
       rgba(255, 250, 235, 0) 100%
     );
     mix-blend-mode: screen;
+  }
+
+  // Bloom where the light hits: a blurred, brightened copy of the art that
+  // bleeds past the rim on the lit side. Unlike the layers above it isn't
+  // held to the art's shape. Faint at rest, it swells while hovered.
+  .bloom {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: $art center / contain no-repeat;
+    filter: blur(calc(var(--size) * 0.03)) brightness(1.8) saturate(1.2);
+    mix-blend-mode: screen;
+    opacity: calc(var(--light) * (0.25 + var(--hover) * 0.5));
+    -webkit-mask: radial-gradient(
+      circle calc(var(--r) * 0.9) at calc(var(--cx) + var(--light-x) * var(--r) * 0.6) calc(var(--cy) + var(--light-y) * var(--r) * 0.6),
+      black 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      transparent 100%
+    );
+    mask: radial-gradient(
+      circle calc(var(--r) * 0.9) at calc(var(--cx) + var(--light-x) * var(--r) * 0.6) calc(var(--cy) + var(--light-y) * var(--r) * 0.6),
+      black 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      transparent 100%
+    );
   }
 
   // The link covers only the art's circle, so the empty corners of the box

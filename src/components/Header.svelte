@@ -109,24 +109,32 @@
   }
 
   // Under the logo on desktop. Phones move the name to the top, under the nav.
+  // Sized to the text, since centred text that outgrows a fixed box only
+  // spills out to the right.
   h1 {
     position: fixed;
     top: var(--name-top);
     left: 0;
     right: 0;
-    width: 640px;
+    width: fit-content;
     margin: auto;
     font-weight: 100;
     font-size: 4em;
     letter-spacing: 14px;
     text-align: center;
+
+    // Letter spacing trails the last glyph too, so a matching indent keeps
+    // the name centred as it widens
+    text-indent: 14px;
     transition:
       letter-spacing 0.25s ease-in-out,
+      text-indent 0.25s ease-in-out,
       color 0.25s ease-in-out,
       text-shadow 0.25s ease-in-out;
 
     &:hover {
       letter-spacing: 20px;
+      text-indent: 20px;
       color: vars.$highlight-color;
       text-shadow: 0px 0px 64px rgba(254, 206, 126, 0.75);
     }
@@ -136,10 +144,12 @@
       width: 100%;
       font-size: clamp(1.8em, 9vw, 2.4em);
       letter-spacing: 6px;
+      text-indent: 6px;
       line-height: 1.2;
 
       &:hover {
         letter-spacing: 8px;
+        text-indent: 8px;
       }
     }
   }
