@@ -1,32 +1,42 @@
-# Hey there! I'm Catlinman! #
+# catlinman.com
 
-I prefer being called Cat in short but whatever you prefer works! I do pretty much anything and everything that has to do with computers ranging from digital art, animation and modelling over to programming, game design, web development and engineering all the way to making electronic music.
+The website of Catlinman, a handle I retired in 2020. It keeps the look the site had from 2017 on, rebuilt as a static SvelteKit site. You can find me at [zealsprince.com](https://zealsprince.com) now.
 
-_As of 2020 this handle has been retired. This page serves as a showcase of the work I did and my online persona at the time. It's time to move on though. Thanks for having come along for this part of my journey!_
+## Development
 
-If you wish to continue following my journey and seeing where I am now, head on over to [zealsprince.com](https://zealsprince.com)
+Requires Node.js.
 
-## Contact ##
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-If you want to get in touch with me you can send me an email over at [contact@catlinman.com](mailto:contact@catlinman.com)
+## Project Structure
 
-Alternatively, feel free to write me on one of the social platforms I am a part of!
+```text
+content/         # Markdown content files, nested folders become nested pages
+src/             # Source code
+  components/    # Svelte components
+  lib/           # Content loading, table handling and the header quotes
+  routes/        # SvelteKit routes
+  scenes/        # Background scene
+  types/         # TypeScript types
+static/          # Static assets (images, favicon, robots.txt)
+```
 
-## Links ##
+## Content
 
-- [YouTube](https://youtube.com/catlinman)
-- [Twitter](https://twitter.com/catllnman)
-- [DeviantArt](https://catlinman.deviantart.com/)
-- [GitHub](https://github.com/catlinman)
-- [Snapchat](https://snapchat.com/add/catlinman)
-- [Steam](https://steamcommunity.com/id/catlinman)
-- [Twitch](https://twitch.tv/catlinman)
-- [Flickr](https://www.instagram.com/catlinman/)
-- [Last.fm](https://last.fm/user/catlinman)
-- [Ask.fm](https://ask.fm/catlinman)
+Every markdown file in `content/` becomes a page at the same path, so `content/about/setup.md` is served at `/about/setup/`. Raw HTML passes through, which the pages use for tables and the layout classes from the original site.
 
-## Website ##
+Headings take an explicit anchor with `# Heading {#anchor}`.
 
-Right now this is being [hosted from a Markdown file](https://github.com/catlinman/catlinman.com/). I'm in the process of recreating the old design of my website while condensing it down to a clean portfolio of my work.
+### Frontmatter
 
-_You'll see it when it's done™️_
+- `navigation` (string): Navigation label for the page. Falls back to `heading`.
+- `heading` (string): Page heading, used in the page title.
+- `description` (string, optional): Meta description used for SEO and social embeds.
+- `order` (number): Used for sorting navigation.
+- `hidden` (boolean, optional): Keeps the page out of the navigation. Pages in subfolders never show up there.
+- `sections` (array of objects, optional): Entries for the section bar below the navigation. Each has a `name` and the `id` of the heading it jumps to. `top` jumps to the start of the page.
